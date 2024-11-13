@@ -9,9 +9,9 @@ database=mediacat
 user=admin
 password=admin
 ```
-NOTE: you can change these values, but this will then need to be updated throughout the application
+*NOTE*: you can change these values, but this will then need to be updated throughout the application
 
-- Here is the docker image: https://hub.docker.com/repository/docker/zstall/mediacat-flask-app/general
+*NOTE*: Docker is required to run this application
 - Run the command: `docker compose up -d`
 - Once the conatiners are running, to configure the DB, get the ID of the non postgres container by running: `docker containers ls`
 - Exec into the non db container: `docker exec -it <container id> sh`
@@ -19,3 +19,5 @@ NOTE: you can change these values, but this will then need to be updated through
 - To populate the DB and create an admin user, in the non db container then run: `python3 create_mediacat_db.py`
 
 This is a demo applicatoin, and will be running on `localhost:5000`. To login into the application use username: `admin` and password `admin`
+
+*NOTE*: Docker image can be found here: https://hub.docker.com/repository/docker/zstall/mediacat-flask-app/general
