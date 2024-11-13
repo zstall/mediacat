@@ -113,14 +113,7 @@ def main():
     users=[
         ["admin", "admin", "5555555555", "admin@noreply.com", "admin", "admin","current_timestamp","current_timestamp", "True", "True"],
         ["admin2", "admin2", "5555555555", "tester1@noreply.com", "admin2", "admin","current_timestamp","current_timestamp", "True", "False"],
-        ["test1", "tester1", "5555555555", "tester1@noreply.com", "tester1", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test2", "tester2", "5555555555", "tester1@noreply.com", "tester2", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test3", "tester3", "5555555555", "tester1@noreply.com", "tester3", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test4", "tester4", "5555555555", "tester1@noreply.com", "tester4", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test5", "tester5", "5555555555", "tester1@noreply.com", "tester5", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test6", "tester6", "5555555555", "tester1@noreply.com", "tester6", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test7", "tester7", "5555555555", "tester1@noreply.com", "tester7", "password","current_timestamp","current_timestamp", "True", "False"],
-        ["test8", "tester8", "5555555555", "tester1@noreply.com", "tester8", "password","current_timestamp","current_timestamp", "True", "False"]
+        ["test1", "tester1", "5555555555", "tester1@noreply.com", "tester1", "password","current_timestamp","current_timestamp", "True", "False"]
     ]
 
     for i in users:
@@ -128,7 +121,7 @@ def main():
         u.add_user_to_db(u.password)
         print("Added user: " + u.username)
 
-    explore_directory('/mediacatapp/test')
+    explore_directory('/mediacatapp')
 
 
 
