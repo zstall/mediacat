@@ -1,0 +1,5 @@
+database.ini
+mcVenv/
+*.log
+test*
+.DS_Store

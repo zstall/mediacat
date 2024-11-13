@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/mediacat    
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=mediacat
+    ports:
+      - "5432:5432"

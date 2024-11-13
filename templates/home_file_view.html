@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <title>W3.CSS Template</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+  html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+  </style>
+
+  </head>
+  <body class="w3-light-grey">
+  
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container w3-row">
+      <div class="w3-col s4">
+        <img src="/static/images/{{u.username}}.jpg" class="w3-circle w3-margin-right" style="width:46px">
+      </div>
+      <div class="w3-col s8 w3-bar">
+        <span>Welcome, <strong> {{ u.username }}</strong></span><br>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+      </div>
+    </div>
+    <hr>
+    <div class="w3-container">
+      <h5>Dashboard</h5>
+    </div>
+    <div class="w3-bar-block">
+      <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-hdd fa-fw"></i>Overview</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa fa-pie-chart fa-fw"></i>drive usage</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file-image-o fa-fw"></i>image files</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file-movie-o fa-fw"></i>video files</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file-zip-o fa-fw"></i>zip files</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file-code-o fa-fw"></i>other files</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-folder fa-fw"></i>directories</a>
+    </div>
+  </nav>
+  
+  
+  <!-- Overlay effect when opening sidebar on small screens -->
+  <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+  
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+  
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+      <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+    </header>
+  
+    <div class="w3-row-padding w3-margin-bottom">
+      <div class="w3-quarter">
+        <div class="w3-container w3-red w3-padding-16">
+          <div class="w3-left"><i class="fa fa-hdd-o w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>{{ file_sum[0][0]|filesizeformat(true) }}</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>File Storage Scanned</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-blue w3-padding-16">
+          <div class="w3-left"><i class="fa fa-cubes w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>{{ total_file[0][0] }}</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Total Files Scanned</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-teal w3-padding-16">
+          <div class="w3-left"><i class="fa fa-cube w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>{{ largest_file[0][0]|filesizeformat(true) }}</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Largest File Scanned</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-orange w3-text-white w3-padding-16">
+          <div class="w3-left"><i class="fa fa-exclamation-triangle w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>{{ top_10_dir[0][2]|filesizeformat(true) }}</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Largest Dir Scanned</h4>
+        </div>
+      </div>
+    </div>
+  
+    <div class="w3-panel">
+      <div class="w3-row-padding" style="margin:0 -16px">
+        <div class="w3-third">
+          <h5>Storage</h5>
+          <div id="piechart" style="width:100%" alt="pie chart"></div>
+          <!--<img src="/static/images/pieChart.avif" style="width:100%" alt="Google Regional Map">-->
+        </div>
+
+        <div class="w3-twothird" >
+          <h5>Top Ten Directories - Total Files</h5>
+          <table class="w3-table w3-striped w3-white">
+          {% if top_10_dir %}
+            {% for dir in top_10_dir %}
+            <tr>
+              <td><i class="fa fa-folder w3-text-blue w3-large"></i></td>
+              <td>{{ dir[0] }}</td>
+              <td><i>{{ dir[1] }}</i></td>
+              <td><i>{{ dir[2]|filesizeformat(true) }}</i></td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+          </table>
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <div class="w3-container">
+      <h5>Usage</h5>
+      <p>Total Used Storage</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-orange" style="width: {{ pct_used_mem }}">{{ pct_used_mem }}</div>
+      </div>
+      <br>
+      <br>
+      <p>Total Free Storage</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-green" style="width: {{ pct_free_mem }}">{{ pct_free_mem }}</div>
+      </div>
+      <br>
+      <br>
+      <p>Total Used out of Total ({{ total_mem }} GB)</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-center w3-padding w3-red" style="width: {{ pct_used_mem }}">{{ total_used_mem }} GB</div>
+      </div>
+    </div>
+    <hr>
+  
+    <div class="w3-container">
+      <h5>Total File Types by Extension</h5>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+      {% if file_type_totals %}
+        {% for type in file_type_totals %}
+          <tr>
+            <td>{{ type[0] }}</td>
+            <td>{{ type[1] }}</td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+      </table><br>  
+    </div>
+
+    <div class="w3-container">
+    {% if admin or super_user %}
+        <form action="/walk_dir" method="post">
+            <p>Input Directory to Ingest</p><input style="width:80%;font-size:18pt;" type = "text" name = "new_dir"/>
+            <br>
+            <button  class="w3-button w3-dark-grey">Submit<i class=""></i></button>
+        </form>
+        <br>
+        <br>
+        
+        <form method="post">
+                <p>Search File Names</p><input style="width:80%;font-size:18pt;" type = "text" name = "pattern_to_query"/>
+                <br>
+                <button  class="w3-button w3-dark-grey">Submit<i class=""></i></button>
+        </form>
+        <br>
+        <br>
+        {% if file_to_search %}
+        <div class="w3-panel">
+            <div class="w3-row-padding" style="margin:0 -16px">
+            <div class="">
+                <h5>Files Matching {{ file_to_search }}</h5>
+                <table class="w3-table w3-striped w3-white w3-card-4">
+                {% for file_searched in files %}
+                <tr>
+                    <td><i class="fa fa-folder w3-text-blue w3-large"></i></td>
+                    <td>{{ file_searched[0] }}</td>
+                    <td><i>{{ file_searched[1] }}</i></td>
+                    <td><i>{{ file_searched[2] }}</i></td>
+                </tr>
+                {% endfor %}
+                </table>
+            </div>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+        <form method="post">
+            <p>Query Database</p><input style="width:80%;font-size:18pt;" type = "text" name = "query_database"/>
+            <br>
+            <button  class="w3-button w3-dark-grey">Submit<i class=""></i></button>
+        </form>
+        <br>
+        <br>
+        {% if query_results %}
+        <div class="w3-panel">
+            <div class="w3-row-padding" style="margin:0 -16px">
+            <div class="">
+                <h5>Query: {{ database_query }}</h5>
+                <table class="w3-table w3-card-4 w3-striped w3-white">
+                {% for result in query_results  %}
+                <tr>
+                    <td><i class="fa fa-database w3-text-red w3-large"></i></td>
+                    <td>{{ result }}</td>
+                </tr>
+                {% endfor %}
+                </table>
+            </div>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+    {% endif %}
+    </div>
+
+    <hr>
+    <div class="w3-container">
+      <h5>Storage in GB</h5>
+      <ul class="w3-ul w3-card-4 w3-white">
+        <li class="w3-padding-16">
+          <img src="/static/images/db_image_two.avif" class="w3-left w3-circle w3-margin-right" style="width:35px">
+          <span class="w3-xlarge">FREE: {{ total_free_mem }} GB</span><br>
+        </li>
+        <li class="w3-padding-16">
+          <img src="/static/images/db_image_two.avif" class="w3-left w3-circle w3-margin-right" style="width:35px">
+          <span class="w3-xlarge">USED: {{ total_used_mem }} GB</span><br>
+        </li>
+        <li class="w3-padding-16">
+          <img src="/static/images/db_image_two.avif" class="w3-left w3-circle w3-margin-right" style="width:35px">
+          <span class="w3-xlarge">TOTAL: {{ total_mem }} GB</span><br>
+        </li>
+      </ul>
+    </div>
+    <hr>
+  
+  
+    <br>
+    <div class="w3-container w3-dark-grey w3-padding-32">
+      <div class="w3-row">
+        <div class="w3-container w3-third">
+          <h5 class="w3-bottombar w3-border-green">Demographic</h5>
+          <p>Language</p>
+          <p>Country</p>
+          <p>City</p>
+        </div>
+        <div class="w3-container w3-third">
+          <h5 class="w3-bottombar w3-border-red">System</h5>
+          <p>Browser</p>
+          <p>OS</p>
+          <p>More</p>
+        </div>
+        <div class="w3-container w3-third">
+          <h5 class="w3-bottombar w3-border-orange">Target</h5>
+          <p>Users</p>
+          <p>Active</p>
+          <p>Geo</p>
+          <p>Interests</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-16 w3-light-grey">
+      <h4>FOOTER</h4>
+      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+    </footer>
+  
+    <!-- End page content -->
+  </div>
+  
+  <script>
+  // Get the Sidebar
+  var mySidebar = document.getElementById("mySidebar");
+  
+  // Get the DIV with overlay effect
+  var overlayBg = document.getElementById("myOverlay");
+  
+  // Toggle between showing and hiding the sidebar, and add overlay effect
+  function w3_open() {
+    if (mySidebar.style.display === 'block') {
+      mySidebar.style.display = 'none';
+      overlayBg.style.display = "none";
+    } else {
+      mySidebar.style.display = 'block';
+      overlayBg.style.display = "block";
+    }
+  }
+  
+  // Close the sidebar with the close button
+  function w3_close() {
+    mySidebar.style.display = "none";
+    overlayBg.style.display = "none";
+  }
+  </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+<script type="text/javascript"> 
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{ data|safe }}); 
+        var options = { 
+            title: 'Storage', 
+            curveType: 'function', 
+            legend: { position: 'bottom' }, 
+            series: { 
+                0: { color: "#008000" }, 
+            } 
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options) 
+      }
+
+
+
+</script> 
+  
+  </body>
+  </html>
+{% endblock %}
+
+
