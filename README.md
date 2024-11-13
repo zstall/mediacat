@@ -1,7 +1,7 @@
 To run mediacat in docker do the following:
 
 - Create a working directory and pull down the repo
-- create a file named `database.ini` and configure it with the following:
+- Create a file named `database.ini` in your working directory and configure it with the following:
 ```
 [mediaCatDB]
 host=postgres
