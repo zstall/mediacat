@@ -11,6 +11,7 @@ password=admin
 ```
 NOTE: you can change these values, but this will then need to be updated throughout the application
 
+- Here is the docker image: https://hub.docker.com/repository/docker/zstall/mediacat-flask-app/general
 - Run the command: `docker compose up -d`
 - Once the conatiners are running, to configure the DB, get the ID of the non postgres container by running: `docker containers ls`
 - Exec into the non db container: `docker exec -it <container id> sh`
