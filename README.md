@@ -38,7 +38,7 @@ To run MediaCat in Docker, follow these steps:
 6. In the container command line, **run the following command to create the necessary tables**:
 
    ```bash
-   psql postgresql://admin:admin@<postgres container-id>:5432/mediacat -af mediacat.sql
+   psql postgresql://admin:admin@<postgres-container-id>:5432/mediacat -af mediacat.sql
    ```
 
 7. To populate the DB and create an admin user, **run the following in the non-DB container**:
